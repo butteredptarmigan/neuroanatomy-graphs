@@ -1,6 +1,14 @@
 import ipywidgets as widgets
 
-def add_node_box(net):
+def refresh_output_factory(net, out, out_file):
+    def refresh_output():
+        out.clear_output()
+        with out:
+            display(net.show(out_file))
+            
+    return refresh_output
+
+def add_node_box(net, callback=None):
     node_name = widgets.Text(placeholder='nazwa')
     node_abbr = widgets.Text(placeholder='skrót')
     button = widgets.Button(description='Dodaj')
@@ -14,6 +22,9 @@ def add_node_box(net):
     
         node_name.value = ''
         node_abbr.value = ''
+
+        if callback:
+            callback()
     
     button.on_click(add_node)
     
@@ -26,7 +37,7 @@ def add_node_box(net):
     
     return node_box
 
-def add_edge_box(net):
+def add_edge_box(net, callback=None):
     fro = widgets.Text(placeholder='A')
     to = widgets.Text(placeholder='B')
     doi = widgets.Text(placeholder='DOI')
@@ -43,6 +54,9 @@ def add_edge_box(net):
         fro.value = ''
         to.value = ''
         sentence.value = ''
+
+        if callback:
+            callback()
     
     button.on_click(add_edge)
     
